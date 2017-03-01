@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youme.mapper.UserMapper">
+
+    <resultMap type="com.youme.pojo.UserInfo" id="UserResultMap">
+          <id column="userid" property="userid"/>
+           <result column="username" property="username"/>
+           <result column="password" property="password"/>
+    </resultMap>
+
+    <select id="login" resultMap="UserResultMap" parameterType="java.lang.String">
+        SELECT username FROM user WHERE password=#{password} AND username=#{username}
+    </select>
+
+
+    <insert id="signup" parameterType="com.youme.pojo.UserInfo">
+       insert into user(username,password) value(#{username},#{password})
+    </insert>
+</mapper>
