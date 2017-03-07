@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.github.bingoohuang:diamond-client:${diamond.version}">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/bingoohuang/diamond-client/${diamond.version}/diamond-client-${diamond.version}.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/bingoohuang/diamond-client/${diamond.version}/diamond-client-${diamond.version}-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/bingoohuang/diamond-client/${diamond.version}/diamond-client-${diamond.version}-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

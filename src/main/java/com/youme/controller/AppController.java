@@ -1,5 +1,6 @@
 package com.youme.controller;
 
+import javax.enterprise.inject.Model;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -18,17 +19,20 @@ public class AppController {
 	@Autowired
 	private UserService userService;
 
+	/*登录*/
 	@GetMapping("/")
-	public String index() {
-		return "login";
+	public String index(Model model) {
+		logger.debug(">>>>>>>>我就测试下日志 debug  <<<<<<<<<");
+		logger.info(">>>>>>>> 我就测试下日志 info   <<<<<<<<<");
+		return "home/login";
 	}
 
 	@PostMapping("/login")
-	public String login(@RequestParam String username, @RequestParam String password, HttpServletRequest request,
+	public String login(@ModelAttribute UserInfo user, HttpServletRequest request,
 			HttpSession session) {
 		System.out.println("/login post提交");
 		String message = "";
-		UserInfo userInfo = userService.login(username, password);
+		UserInfo userInfo = userService.login(user);
         System.out.println(userInfo.toString());
 		if (null == userInfo) {
 			message = "用户名密码不匹配，登录失败！";
@@ -36,15 +40,11 @@ public class AppController {
 			session.setAttribute("user", userInfo);
 			message = "登录成功！";
 		}
-		logger.info("[" + username + "] 登录系统，" + message);
+		logger.info("[" + user.getUserName() + "] 登录系统，" + message);
 		request.setAttribute("message", message);
-		return "main";
+		return "home/success";
 	}
 
-	@GetMapping("/signup")
-	public String signupGet() {
-		return "signup";
-	}
 
 	@RequestMapping(value = "/signup",method = RequestMethod.POST)
 	public String signup(@ModelAttribute UserInfo user, HttpServletRequest request,
@@ -61,8 +61,8 @@ public class AppController {
 		}
 		session.setAttribute("user", user);
 		message = "注册成功！";
-		logger.info("[" + user.getUsername()+ "] 注册系统，" + message);
+		logger.info("[" + user.getUserName()+ "] 注册系统，" + message);
 		request.setAttribute("message", message);
-		return "main";
+		return "home/success";
 	}
 }

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+    <title>登录/注册</title>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" href="../../../resources/css/login.css" />
+    <script src="../../../resources/js/jquery.min.js" th:src="@{/resources/js/jquery.min.js}"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" src="../../../resources/js/login.js"></script>
+</head>
+<body class="login-bgi  login-container">
+<div class="container">
+    <section id="formHolder">
+
+        <div class="row">
+
+            <!-- Brand Box -->
+            <div class="col-sm-6 brand">
+                <a href="#" class="logo">MR <span>.</span></a>
+
+                <div class="heading">
+                    <h2>Marina</h2>
+                    <p>Your Right Choice</p>
+                </div>
+
+                <div class="success-msg">
+                    <p>Great! You are one of our members now</p>
+                    <a href="#" class="profile">Your Profile</a>
+                </div>
+            </div>
+
+
+            <!-- Form Box -->
+            <div class="col-sm-6 form">
+
+                <!-- Login Form -->
+                <div class="login form-peice switched">
+                    <form class="login-form" th:action="@{/login}" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="loginemail">Email Adderss</label>
+                            <input type="email" name="userName" id="loginemail" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" name="Password" id="loginPassword" required>
+                        </div>
+
+                        <div class="CTA">
+                            <input type="submit" value="Login">
+                            <a href="#" class="switch">I'm New</a>
+                        </div>
+                    </form>
+                </div>
+                <!-- End Login Form -->
+
+
+                <!-- Signup Form -->
+                <div class="signup form-peice">
+                    <form class="signup-form" th:action="@{/signup}" method="post" enctype="multipart/form-data">
+
+                        <div class="form-group">
+                            <label for="name">NickName</label>
+                            <input type="text" name="username" id="name" class="name">
+                            <span class="error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Adderss</label>
+                            <input type="email" name="emailAdress" id="email" class="email">
+                            <span class="error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number - <small>Optional</small>
+                            </label>
+                            <input type="text" name="mobilephone" id="phone">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" name="password" id="password" class="pass">
+                            <span class="error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="passwordCon">Confirm Password</label>
+                            <input type="password" name="passwordCon" id="passwordCon" class="passConfirm">
+                            <span class="error"></span>
+                        </div>
+
+                        <div class="CTA">
+                            <input type="submit" value="Signup Now" id="submit">
+                            <a href="#" class="switch">I have an account</a>
+                        </div>
+                    </form>
+                </div>
+                <!-- End Signup Form -->
+            </div>
+        </div>
+
+    </section>
+
+</div>
+
+<div th:replace="fragments/signHead :: header"></div>
+<div class="page-container" style="min-height:593px">
+
+    <!-- Page content -->
+    <div class="page-content">
+        <div class="content-wrapper">
+
+            <!-- Content area -->
+            <div class="content">
+
+
+                <form method="post" th:action="@{/authenticate}">
+                    <div class="panel panel-body login-form">
+                        <div class="text-center">
+                            <div class="icon-object border-slate-300 text-slate-300"><i class="icon-reading"></i></div>
+                            <h5 class="content-group">登录</h5>
+                        </div>
+
+                        <div class="form-group has-feedback has-feedback-left div-input-sign">
+                            <div class="i-sign">
+                                <i class="icon-user text-muted"></i>
+                            </div>
+                            <input type="text" class="input-sign" id="inputEmail" placeholder="请输入手机/邮箱" name="username" >
+
+                            <span class="help_block" style="color: red;margin-top: 7px" th:if="${param.error != null && session.SPRING_SECURITY_LAST_EXCEPTION.message == 'user not found'}">账号不存在</span>
+                        </div>
+
+                        <div class="form-group has-feedback has-feedback-left div-input-sign" >
+                            <div class="i-sign">
+                                <i class="icon-lock2 text-muted"></i>
+                            </div>
+                            <input type="password" class="input-sign" id="inputPassword" placeholder="请输入密码"  name="password" onkeypress="checkCapsLock(event)">
+                            <div class="label label-success pull-right" id="capsLockTip" style="display: none;">注意，大写锁定被打开！</div>
+                            <span class="help_block" style="color: red;margin-top: 12px" th:if="${param.error != null && session.SPRING_SECURITY_LAST_EXCEPTION.getClass().getName().indexOf(#strings.defaultString('BadCredentialsException',1)) != -1}">密码错误</span>
+                        </div>
+                        <div class="form-group has-feedback has-feedback-left" th:if="${param.error != null ||session.message != null}">
+                            <div class="col-lg-10" style="width: 65%!important;">
+                                <input type="text" class="form-control" id="inputVerificationCode" placeholder="验证码" name="verificationCode" />
+                                <span class="help_block" style="color: red" th:if="${session.message != null}" th:text="${session.message == 1 ? '验证码错误！':''}"></span>
+                            </div>
+                            <div class="col-lgi">
+                                <img th:src="@{/users/verification}" id="verificationCode">
+                            </div>
+                        </div>
+
+                        <div class="form-group login-options">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>
+                                    <input type="checkbox" class="styled">
+                                        记住密码
+                                    </label>
+                                </div>
+
+                                <div class="col-sm-6 text-right">
+                                    <a th:href="@{/toretrievePage}">忘记密码?</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn bg-blue btn-block">登录 <i class="icon-arrow-right14 position-right"></i></button>
+                        </div>
+
+                        <div class="content-divider text-muted form-group">
+                            <span>还没有账号?</span>
+                        </div>
+                        <a href="/choiceRole" th:href="@{/signup}" class="btn btn-default btn-block content-group">注册</a>
+                        <span class="help-block text-center no-margin">通过继续，您确认您已经阅读我们的<a href="#">服务条款</a> 和<a href="#">隐私权政策</a></span>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer :: footer">&copy; 2013 The Static Templates</div>
+</body>
+</html>
